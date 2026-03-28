@@ -1,0 +1,85 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Anchita Hari — Software Engineer">
+  	<main>
+		<section class="hero">
+			<div class="hero-text">
+			<p class="hero-eyebrow">Software Engineer · Building in public</p>
+			<h1 class="hero-name">Anchita <em>Hari</em><br>Narayanan</h1>
+			<p class="hero-title">Software Engineer</p>
+			<p class="hero-bio">
+				Backend engineer at Capital One, building with Go and AWS.
+				Currently learning in public — Kubernetes, AI integration,
+				and figuring out what kind of engineer I want to become next.
+			</p>
+			<div class="hero-links">
+				<a href="#ask" class="btn-primary">Ask me anything</a>
+				<a href="https://github.com/anchitahari/anchita-dev" target="_blank" class="btn-ghost">View on GitHub</a>
+			</div>
+			</div>
+			<div class="hero-image">
+			<img src="/anchita.png" alt="Anchita Hari Narayanan" />
+			</div>
+		</section>
+
+		<section class="chatbot-section fade-in" id="ask">
+			<p class="section-label">AI-powered</p>
+			<h2 class="section-heading">Ask me anything</h2>
+			<p class="section-sub">Have a question about my experience, projects, or what I'm working on? Ask below — powered by an LLM that knows my background.</p>
+
+			<div class="chat-widget">
+			<div class="chat-header">
+				<div class="chat-dot"></div>
+				<span class="chat-header-text">anchita.dev · AI assistant · powered by RAG</span>
+			</div>
+			<div class="chat-messages" id="chatMessages">
+				<div class="chat-message assistant">
+				<div class="bubble">Hi! I'm an AI that knows Anchita's background, experience, and projects. Ask me anything — what she's worked on, what she's learning, or what she's looking for next.</div>
+				</div>
+			</div>
+			<div class="chat-suggestions" id="suggestions">
+				<button class="suggestion" onclick="sendSuggestion(this)">What has she built at Capital One?</button>
+				<button class="suggestion" onclick="sendSuggestion(this)">What is she learning right now?</button>
+				<button class="suggestion" onclick="sendSuggestion(this)">What kind of roles is she exploring?</button>
+			</div>
+			<div class="chat-input-row">
+				<input type="text" class="chat-input" id="chatInput" placeholder="Ask me anything about Anchita..." />
+				<button class="chat-send" onclick="sendMessage()">Send</button>
+			</div>
+			</div>
+		</section>
+
+		<section class="about-section fade-in" id="about">
+			<div class="about-sticky">
+			<p class="section-label">About</p>
+			<h2 class="section-heading">The story so far</h2>
+			</div>
+			<div class="about-body">
+			<p>
+				I'm a software engineer based in <strong>McLean, VA</strong>, currently working at Capital One
+				on card acquisitions infrastructure. I build backend systems in <strong>Go and Java</strong>,
+				work extensively with <strong>AWS</strong>, and spend a lot of time thinking about how
+				to make complex systems reliable and observable.
+			</p>
+			<p>
+				After almost four years of professional engineering, I've realized something important:
+				the part of my job I love most isn't writing code in isolation — it's <strong>teaching,
+				explaining, and helping others grow</strong>. Whether that's mentoring teammates,
+				documenting systems clearly, or translating technical decisions into plain language.
+			</p>
+			<p>
+				I'm currently exploring a transition toward <strong>developer advocacy</strong> or
+				<strong>customer engineering</strong> — roles where I can bring both deep technical
+				knowledge and genuine curiosity about people. This site is part of that journey:
+				a project I'm building in public to learn Go, Kubernetes, and AI integration all at once.
+			</p>
+			<p>
+				Outside of work, I'm a Virginia Tech CS alum, a former CS ambassador and engineering
+				mentor, and someone who believes the best growth happens when you're <strong>uncomfortable
+				and learning something new</strong>.
+			</p>
+			</div>
+		</section>
+  	</main>
+</Layout>
