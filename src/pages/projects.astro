@@ -1,0 +1,276 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const projects = [
+  {
+    number: "01",
+    name: "anchita.dev",
+    description: "This site. A full-stack personal portfolio built from scratch in Go and Astro, containerized with Docker, deployed on AWS EKS, and powered by a RAG-based AI chatbot that answers questions about my experience.",
+    status: "In progress",
+    phases: [
+      { label: "Go HTTP server", done: true },
+      { label: "Docker + EKS", done: true },
+      { label: "Astro frontend", done: true },
+      { label: "AI chatbot (RAG)", done: false },
+      { label: "Terraform + CI/CD", done: false },
+    ],
+    stack: ["Go", "Astro", "Docker", "Kubernetes", "AWS EKS", "AWS ECR", "TypeScript"],
+    github: "https://github.com/anchitahari/anchita-dev",
+    live: "https://anchita.dev",
+  },
+];
+---
+
+<Layout title="Projects — Anchita Hari">
+  <main class="projects-main">
+    <header class="projects-header fade-in">
+      <a href="/" class="back-link">← back</a>
+      <p class="section-label">Projects</p>
+      <h1 class="projects-heading">Building in practice</h1>
+      <p class="projects-sub">I learn best by doing, especially when I'm genuinely invested in what I'm building</p>
+    </header>
+
+    <div class="projects-list">
+      {projects.map((project, i) => (
+        <article class="project-card fade-in" style={`animation-delay: ${i * 0.15}s`}>
+          <div class="project-top">
+            <span class="project-number">{project.number}</span>
+            <span class={`project-status ${project.status === 'In progress' ? 'status-active' : 'status-shipped'}`}>
+              {project.status}
+            </span>
+          </div>
+
+          <h2 class="project-name">{project.name}</h2>
+          <p class="project-description">{project.description}</p>
+
+          {project.phases.length > 0 && (
+            <div class="project-phases">
+              <p class="phases-label">Build progress</p>
+              <div class="phases-list">
+                {project.phases.map(phase => (
+                  <div class={`phase-item ${phase.done ? 'phase-done' : 'phase-pending'}`}>
+                    <span class="phase-dot" />
+                    <span class="phase-label">{phase.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div class="project-stack">
+            {project.stack.map(tech => (
+              <span class="tech-tag">{tech}</span>
+            ))}
+          </div>
+
+          <div class="project-links">
+            {project.github && (
+              <a href={project.github} target="_blank" class="project-link">
+                GitHub →
+              </a>
+            )}
+            {project.live && (
+              <a href={project.live} target="_blank" class="project-link">
+                Live site →
+              </a>
+            )}
+            {!project.github && !project.live && (
+              <span class="project-link-muted">Internal project — no public repo</span>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+  </main>
+</Layout>
+
+<style>
+    .projects-main {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 8rem 4rem 6rem;
+    }
+
+    .back-link {
+        display: inline-block;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+        margin-bottom: 3rem;
+        transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--teal); }
+
+    .projects-header {
+        margin-bottom: 5rem;
+    }
+
+    .projects-heading {
+        font-family: var(--serif);
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 400;
+        line-height: 1.1;
+        margin-bottom: 1rem;
+    }
+
+    .projects-sub {
+        color: var(--muted);
+        font-size: 1rem;
+        max-width: 520px;
+        line-height: 1.8;
+    }
+
+    .projects-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .project-card {
+        border: 1px solid var(--border);
+        padding: 2.5rem;
+        transition: border-color 0.2s;
+        opacity: 0;
+        animation: fadeUp 0.7s ease forwards;
+    }
+
+    .project-card:hover {
+        border-color: var(--teal-dim);
+    }
+
+    .project-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .project-number {
+        font-size: 0.75rem;
+        color: var(--muted);
+        letter-spacing: 0.1em;
+        font-family: var(--sans);
+    }
+
+    .project-status {
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.25rem 0.75rem;
+        border-radius: 2px;
+    }
+
+    .status-active {
+        background: rgba(45, 212, 191, 0.1);
+        color: var(--teal);
+        border: 1px solid var(--teal-dim);
+    }
+
+    .status-shipped {
+        background: rgba(255,255,255,0.04);
+        color: var(--muted);
+        border: 1px solid var(--border);
+    }
+
+    .project-name {
+        font-family: var(--serif);
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        font-weight: 400;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+    }
+
+    .project-description {
+        color: #a8a5a0;
+        font-size: 0.95rem;
+        line-height: 1.8;
+        margin-bottom: 2rem;
+        max-width: 680px;
+    }
+
+    .project-phases {
+        margin-bottom: 2rem;
+    }
+
+    .phases-label {
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 0.75rem;
+    }
+
+    .phases-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1.5rem;
+    }
+
+    .phase-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+    }
+
+    .phase-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .phase-done .phase-dot { background: var(--teal); }
+    .phase-done .phase-label { color: var(--white); }
+    .phase-pending .phase-dot { background: var(--border); border: 1px solid var(--muted); }
+    .phase-pending .phase-label { color: var(--muted); }
+
+    .project-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .tech-tag {
+        font-size: 0.75rem;
+        color: var(--teal);
+        border: 1px solid var(--teal-dim);
+        background: rgba(45, 212, 191, 0.05);
+        padding: 0.2rem 0.6rem;
+        border-radius: 2px;
+        letter-spacing: 0.03em;
+    }
+
+    .project-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    .project-link {
+        color: var(--teal);
+        text-decoration: none;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+        transition: opacity 0.2s;
+    }
+
+    .project-link:hover { opacity: 0.7; }
+
+    .project-link-muted {
+        color: var(--muted);
+        font-size: 0.85rem;
+        font-style: italic;
+    }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+        .projects-main { padding: 6rem 2rem 4rem; }
+    }
+</style>

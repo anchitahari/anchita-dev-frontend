@@ -20,9 +20,11 @@ const { title = 'Anchita Hari — Software Engineer' } = Astro.props;
     <nav id="nav">
       <a href="/" class="nav-logo">anchita<span>.dev</span></a>
       <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#ask">Ask me</a></li>
-        <li><a href="https://www.linkedin.com/in/anchita-hn" target="_blank">Writing</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/?openChat=1" id="nav-ask">Ask me</a></li>
+        <li><a href="/resume.pdf" target="_blank">Resume</a></li>
+        <li><a href="/projects">Projects</a></li>
+        <li><a href="/writing">Writing</a></li>
         <li><a href="mailto:anchita.hari@gmail.com">Contact</a></li>
       </ul>
     </nav>
@@ -39,6 +41,15 @@ const { title = 'Anchita Hari — Software Engineer' } = Astro.props;
     </footer>
 
     <script>
+        declare global {
+            interface Window {
+                toggleChat: () => void;
+                sendSuggestion: (btn: HTMLButtonElement) => void;
+                sendMessage: () => Promise<void>;
+            }
+        }
+
+        // nav scroll
         const nav = document.getElementById('nav');
         if (nav) {
             window.addEventListener('scroll', () => {
@@ -46,16 +57,155 @@ const { title = 'Anchita Hari — Software Engineer' } = Astro.props;
             });
         }
 
+        // scroll fade-in
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(el => {
+        entries.forEach(el => {
             if (el.isIntersecting) {
-                el.target.classList.add('visible');
-                observer.unobserve(el.target);
+            el.target.classList.add('visible');
+            observer.unobserve(el.target);
             }
-            });
+        });
         }, { threshold: 0.1 });
-
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Add these to window so inline onclick handlers can find them
+        window.toggleChat = function() {
+            const popup = document.getElementById('chatPopup');
+            if (popup) {
+                popup.classList.toggle('open');
+                if (popup.classList.contains('open')) {
+                const input = document.getElementById('chatInput');
+                if (input) setTimeout(() => input.focus(), 100);
+                }
+            }
+        }
+
+        window.sendSuggestion = function(btn: HTMLButtonElement) {
+            const chatInput = document.getElementById('chatInput') as HTMLInputElement | null;
+            if (chatInput) chatInput.value = btn.textContent ?? '';
+            const suggestions = document.getElementById('suggestions');
+            if (suggestions) suggestions.style.display = 'none';
+            window.sendMessage();
+        }
+
+        window.sendMessage = async function() {
+            const chatInput = document.getElementById('chatInput') as HTMLInputElement | null;
+            const chatMessages = document.getElementById('chatMessages');
+            if (!chatInput || !chatMessages) return;
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            appendMessage('user', message);
+            chatInput.value = '';
+            const typing = appendTyping();
+
+            try {
+                const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message })
+                });
+                const data = await res.json();
+                typing?.remove();
+                appendMessage('assistant', data.message || 'Something went wrong — please try again.');
+            } catch {
+                typing?.remove();
+                appendMessage('assistant', 'Could not reach the server. Please try again later.');
+            }
+        }
+
+        function appendMessage(role: string, text: string): HTMLDivElement | null {
+            const chatMessages = document.getElementById('chatMessages');
+            if (!chatMessages) return null;
+            const div = document.createElement('div');
+            div.className = `chat-message ${role}`;
+            div.innerHTML = `<div class="bubble">${text}</div>`;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return div;
+        }
+
+        function appendTyping(): HTMLDivElement | null {
+            const chatMessages = document.getElementById('chatMessages');
+            if (!chatMessages) return null;
+            const div = document.createElement('div');
+            div.className = 'chat-message assistant';
+            div.innerHTML = `<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return div;
+        }
+
+        // "Ask me" nav — open chat directly on homepage, navigate with param otherwise
+        const navAsk = document.getElementById('nav-ask');
+        if (navAsk) {
+            navAsk.addEventListener('click', (e) => {
+                if (window.location.pathname === '/') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.toggleChat();
+                }
+            });
+        }
+
+        // open chat if navigated via "Ask me"
+        if (new URLSearchParams(window.location.search).get('openChat')) {
+            history.replaceState(null, '', window.location.pathname);
+            setTimeout(() => window.toggleChat(), 0);
+        }
+
+        // enter key in chat
+        const chatInput = document.getElementById('chatInput');
+        if (chatInput) {
+            chatInput.addEventListener('keydown', e => {
+                if (e.key === 'Enter') window.sendMessage();
+            });
+        }
+
+        // close popup when clicking outside
+        document.addEventListener('click', (e) => {
+            const popup = document.getElementById('chatPopup');
+            const bubble = document.getElementById('chatBubble');
+            if (popup && bubble && popup.classList.contains('open')) {
+                if (!popup.contains(e.target as Node) && !bubble.contains(e.target as Node)) {
+                popup.classList.remove('open');
+                }
+            }
+        });
     </script>
+
+    <div class="chat-bubble" id="chatBubble" onclick="toggleChat()" title="Ask me anything">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+    </div>
+
+    <div class="chat-popup" id="chatPopup">
+        <div class="chat-popup-header">
+            <div class="chat-popup-title">
+            <div class="chat-dot"></div>
+            <span>Ask me anything</span>
+        </div>
+        <button class="chat-close" onclick="toggleChat()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+        <div class="chat-message assistant">
+        <div class="bubble">Hi! I'm an AI that knows Anchita's background, experience, and projects. Ask me what she's worked on, what she's building right now, or what kind of engineer she is.</div>
+        </div>
+    </div>
+    <div class="chat-suggestions" id="suggestions">
+        <button class="suggestion" onclick="sendSuggestion(this)">What has she built at Capital One?</button>
+        <button class="suggestion" onclick="sendSuggestion(this)">What is she learning right now?</button>
+        <button class="suggestion" onclick="sendSuggestion(this)">What kind of engineer is she?</button>
+    </div>
+        <div class="chat-input-row">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Ask me anything about Anchita..." />
+            <button class="chat-send" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
   </body>
 </html>
