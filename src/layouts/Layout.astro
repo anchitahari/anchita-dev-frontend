@@ -40,6 +40,7 @@ const { title = 'Anchita Hari — Software Engineer' } = Astro.props;
     </footer>
 
     <script>
+        export {};
         declare global {
             interface Window {
                 toggleChat: () => void;
@@ -163,13 +164,14 @@ const { title = 'Anchita Hari — Software Engineer' } = Astro.props;
 
         // close popup when clicking outside
         document.addEventListener('click', (e) => {
-            const popup = document.getElementById('chatPopup');
-            const bubble = document.getElementById('chatBubble');
-            if (popup && bubble && popup.classList.contains('open')) {
-                if (!popup.contains(e.target as Node) && !bubble.contains(e.target as Node)) {
-                popup.classList.remove('open');
-                }
+        const popup = document.getElementById('chatPopup');
+        const bubble = document.getElementById('chatBubble');
+        const askBtn = document.querySelector('.btn-primary');
+        if (popup && bubble && popup.classList.contains('open')) {
+            if (!popup.contains(e.target as Node) && !bubble.contains(e.target as Node) && e.target !== askBtn) {
+            popup.classList.remove('open');
             }
+        }
         });
     </script>
 
