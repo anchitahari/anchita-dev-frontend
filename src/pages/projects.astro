@@ -35,9 +35,14 @@ const projects = [
         <article class="project-card fade-in" style={`animation-delay: ${i * 0.15}s`}>
           <div class="project-top">
             <span class="project-number">{project.number}</span>
-            <span class={`project-status ${project.status === 'In progress' ? 'status-active' : 'status-shipped'}`}>
-              {project.status}
-            </span>
+            {project.status === 'In progress' ? (
+                <span class="status-active">
+                    <span class="signal-dot"></span>
+                    IN PROGRESS
+                </span>
+                ) : (
+                <span class="status-shipped">SHIPPED</span>
+            )}
           </div>
 
           <h2 class="project-name">{project.name}</h2>
@@ -163,9 +168,21 @@ const projects = [
     }
 
     .status-active {
-        background: rgba(45, 212, 191, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.65rem;
+        letter-spacing: 0.12em;
         color: var(--teal);
-        border: 1px solid var(--teal-dim);
+    }
+
+    .signal-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #22c55e;
+        animation: pulse 2s infinite;
+        flex-shrink: 0;
     }
 
     .status-shipped {
@@ -180,6 +197,11 @@ const projects = [
         font-weight: 400;
         margin-bottom: 1rem;
         line-height: 1.2;
+    }
+
+    .project-card:hover .project-name {
+        color: var(--teal);
+        transition: color 0.2s;
     }
 
     .project-description {
@@ -239,9 +261,16 @@ const projects = [
         color: var(--teal);
         border: 1px solid var(--teal-dim);
         background: rgba(45, 212, 191, 0.05);
-        padding: 0.2rem 0.6rem;
-        border-radius: 2px;
+        padding: 0.2rem 0.75rem;
+        border-radius: 999px;
         letter-spacing: 0.03em;
+    }
+
+    .phase-pill {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.75rem;
+        border-radius: 999px;
+        letter-spacing: 0.05em;
     }
 
     .project-links {

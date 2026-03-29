@@ -2,55 +2,107 @@
 import Layout from '../layouts/Layout.astro';
 ---
 <Layout title="Anchita Hari — Software Engineer">
-  	<main>
-		<section class="hero">
-			<div class="hero-text">
-				<p class="hero-eyebrow">Software Engineer · Building in public</p>
-				<h1 class="hero-name">Anchita <em>Hari</em><br>Narayanan</h1>
-				<p class="hero-title">Software Engineer</p>
-				<p class="hero-bio">
-					Backend engineer at Capital One, building with Go and AWS.
-					Currently learning in public, starting off with Kubernetes and AI integration.
-					Figuring out what kind of engineer I want to become next.
-				</p>
-				<div class="hero-links">
-					<button class="btn-primary" onclick="toggleChat()">Ask me anything</button>
-					<a href="/resume.pdf" target="_blank" class="btn-ghost">View resume</a>
-					<a href="https://github.com/anchitahari/anchita-dev" target="_blank" class="btn-ghost">View on GitHub</a>
-				</div>
-			</div>
-			<div class="hero-image">
-			<img src="/anchita.png" alt="Anchita Hari Narayanan" />
-			</div>
-		</section>
+  	<main class="bento-main">
+    	<div class="bento-grid">
 
-		<section class="about-section fade-in" id="about">
-			<div class="about-sticky">
-			<p class="section-label">About</p>
-			<h2 class="section-heading">The story so far</h2>
+		<!-- Hero card -->
+		<div class="bento-card hero-card fade-in">
+			<div class="hero-top">
+			<img src="/anchita.png" alt="Anchita Hari" class="avatar" />
 			</div>
-			<div class="about-body">
-			<p>
-				I'm a software engineer based in <strong>McLean, VA</strong>, currently working at Capital One
-				in Card Tech, specifically in Card Acquisitions. I contribute to backend systems in <strong>Go and Java</strong>
-				and work extensively with <strong>AWS</strong>.
-			</p>
-			<p>
-				After almost four years of engineering, I've realized that the work that I find most energizing isn't 
-				just shipping features. It's the moments where I get to <strong>teach, explain, and help others grow</strong> 
-				whether that's mentoring teammates, documenting systems clearly, or translating technical decisions into plain language.
-			</p>
-			<p>
-				This site is a project I'm building in public to keep that energy going outside of work. I am <strong>deepening my 
-				expertise in Go, learning Kubernetes and AI integration,</strong> and documenting everything along the way so 
-				someone else doesn't have to figure it out alone.  
-			</p>
-			<p>
-				Outside of work, I'm a Virginia Tech CS alum who has always been drawn to mentoring and teaching and actively seek 
-				those opporutities. My favorite piece of advice to give is <strong>discomfort is a sign you're heading in the right 
-				direction</strong>. I'm still learning to follow it myself.
-			</p>
+			<h1 class="bento-name">Anchita <em>Hari</em><br>Narayanan</h1>
+			<div class="role-pills">
+			<span class="pill">Software Engineer</span>
+			<span class="pill">Go + AWS</span>
+			<span class="pill">Learning in public</span>
 			</div>
-		</section>
+			<p class="bento-bio">Engineer by day. Learner by night. Currently figuring out what kind of engineer I want to become next.</p>
+			<div class="bento-actions">
+			<button class="btn-primary" onclick="window.toggleChat()">Ask me anything</button>
+			<a href="/resume.pdf" target="_blank" class="btn-ghost">Resume</a>
+			<a href="https://github.com/your-username/anchita-dev" target="_blank" class="btn-ghost">GitHub</a>
+			</div>
+		</div>
+
+		<!-- Building in public card -->
+		<div class="bento-card building-card fade-in">
+			<div class="card-label">
+			<span class="signal-dot"></span>
+			IN PROGRESS
+			</div>
+			<h2 class="card-heading">What I'm building</h2>
+			<p class="card-text">Currently rebuilding my personal site from scratch with a Go backend, Kubernetes, and an AI chatbot powered by RAG while documenting all my progress in public!</p>
+			<div class="phase-pills">
+			<span class="phase-pill done">Go server</span>
+			<span class="phase-pill done">Docker + EKS</span>
+			<span class="phase-pill done">Astro frontend</span>
+			<span class="phase-pill pending">RAG chatbot</span>
+			<span class="phase-pill pending">CI/CD</span>
+			</div>
+			<a href="/projects" class="card-link">View all projects →</a>
+		</div>
+
+		<!-- Latest post card -->
+		<div class="bento-card post-card fade-in">
+			<div class="card-label">LATEST POST</div>
+			<h2 class="card-heading">Growth doesn't happen on its own</h2>
+			<p class="card-text">Recently, I've been sitting with an uncomfortable truth. Growth doesn't happen on its own — you have to go looking for it.</p>
+			<a href="/writing" class="card-link">View all posts →</a>
+		</div>
+
+		<!-- About card -->
+		<div class="bento-card about-card fade-in">
+			<div class="about-card-inner">
+				<div class="about-card-left">
+					<p class="card-label">ABOUT</p>
+					<h2 class="section-heading">The story so far</h2>
+				</div>
+			<div class="about-card-right">
+				<p>
+					I'm a software engineer based in <strong>McLean, VA</strong>, currently working at Capital One
+					in Card Tech, specifically in Card Acquisitions. I contribute to backend systems in <strong>Go and Java</strong>
+					and work extensively with <strong>AWS</strong>.
+				</p>
+				<p>
+					After almost four years of engineering, I've realized that the work I find most energizing isn't
+					just shipping features. It's the moments where I get to <strong>teach, explain, and help others grow</strong>
+					whether that's mentoring teammates, documenting systems clearly, or translating technical decisions
+					into plain language.
+				</p>
+				<p>
+					This site is a project I'm building in public to keep that energy going outside of work. I am
+					<strong>deepening my expertise in Go, learning Kubernetes and AI integration</strong>, and
+					documenting everything along the way so someone else doesn't have to figure it out alone.
+				</p>
+				<p>
+					Outside of work, I'm a Virginia Tech CS alum who has always been drawn to mentoring and teaching
+					and actively sought those opportunities. My favorite piece of advice to give is that
+					<strong>discomfort is a sign you're heading in the right direction</strong>. I'm still learning
+					to follow it myself.
+				</p>
+			</div>
+			</div>
+		</div>
+
+		<!-- Connect card -->
+		<div class="bento-card connect-card fade-in">
+			<div class="card-label">CONNECT</div>
+			<h2 class="card-heading">Whether you are figuring your path out in tech or have wisdom to share, I'd love to connect </h2>
+			<div class="connect-links">
+				<a href="https://www.linkedin.com/in/anchita-hn" target="_blank" class="connect-item">
+					<span class="connect-icon">in</span>
+					<span>LinkedIn</span>
+				</a>
+				<a href="https://github.com/anchitahari" target="_blank" class="connect-item">
+					<span class="connect-icon">gh</span>
+					<span>GitHub</span>
+				</a>
+				<a href="mailto:anchita.hari@gmail.com" class="connect-item">
+					<span class="connect-icon">@</span>
+					<span>Email</span>
+				</a>
+			</div>
+			</div>
+		</div>
   	</main>
 </Layout>
