@@ -99,8 +99,12 @@ const { title = 'Anchita Hari — Software Engineer' } = Astro.props;
             chatInput.value = '';
             const typing = appendTyping();
 
+            const apiUrl = window.location.hostname === 'localhost' 
+                ? '/api/chat' 
+                : 'https://api.anchita.dev/api/chat';
+
             try {
-                const res = await fetch('/api/chat', {
+                const res = await fetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message })
