@@ -6,15 +6,15 @@ const projects = [
     number: "01",
     name: "anchita.dev",
     description: "This site. A full-stack personal portfolio built from scratch in Go and Astro, containerized with Docker, deployed on AWS EKS, and powered by a RAG-based AI chatbot that answers questions about my experience.",
-    status: "In progress",
+    status: "Shipped",
     phases: [
       { label: "Go HTTP server", done: true },
       { label: "Docker + EKS", done: true },
       { label: "Astro frontend", done: true },
-      { label: "AI chatbot (RAG)", done: false },
-      { label: "Terraform + CI/CD", done: false },
+      { label: "AI chatbot (RAG)", done: true },
+      { label: "Terraform + CI/CD", done: true },
     ],
-    stack: ["Go", "Astro", "Docker", "Kubernetes", "AWS EKS", "AWS ECR", "TypeScript"],
+    stack: ["Go", "Astro", "TypeScript", "Docker", "Kubernetes", "AWS EKS", "AWS ECR", "Terraform"],
     github: "https://github.com/anchitahari/anchita-dev",
     live: "https://anchita.dev",
   },
@@ -41,7 +41,7 @@ const projects = [
                     IN PROGRESS
                 </span>
                 ) : (
-                <span class="status-shipped">SHIPPED</span>
+                <span class="status-shipped">📦 SHIPPED</span>
             )}
           </div>
 
@@ -186,9 +186,12 @@ const projects = [
     }
 
     .status-shipped {
-        background: rgba(255,255,255,0.04);
-        color: var(--muted);
-        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.65rem;
+        letter-spacing: 0.12em;
+        color: #f0eeea;
     }
 
     .project-name {
