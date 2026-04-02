@@ -19,25 +19,47 @@ const { title = 'Anchita Hari - Software Engineer' } = Astro.props;
   </head>
   <body>
     <nav id="nav">
-      <a href="/" class="nav-logo">anchita<span>.dev</span></a>
-      <ul class="nav-links">
-        <li><a href="/?openChat=1" id="nav-ask">Ask me</a></li>
-        <li><a href="/resume.pdf" target="_blank">Resume</a></li>
-        <li><a href="/projects">Projects</a></li>
-        <li><a href="/writing">Writing</a></li>
-        <li><a href="mailto:anchita.hari@gmail.com">Contact</a></li>
-      </ul>
+        <a href="/" class="nav-logo">anchita<span>.dev</span></a>
+
+        <!--- desktop nav -->
+        <ul class="nav-links">
+            <li><a href="/?openChat=1" id="nav-ask">Ask me</a></li>
+            <li><a href="/resume.pdf" target="_blank">Resume</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/writing">Writing</a></li>
+            <li><a href="mailto:anchita.hari@gmail.com">Contact</a></li>
+        </ul>
+
+        <!-- hamburger button -->
+        <button class="hamburger" id="hamburger" aria-label="Open menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </nav>
+
+    <!-- mobile menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu">✕</button>
+        <ul class="mobile-nav-links">
+            <li><a href="/projects" onclick="closeMobileMenu()">Work</a></li>
+            <li><a href="/#about" onclick="closeMobileMenu()">About</a></li>
+            <li><a href="/resume.pdf" target="_blank" onclick="closeMobileMenu()">Resume</a></li>
+            <li><a href="/writing" onclick="closeMobileMenu()">Writing</a></li>
+            <li><a href="mailto:anchita.hari@gmail.com" onclick="closeMobileMenu()">Contact</a></li>
+        </ul>
+    </div>
+    <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobileMenu()"></div>
 
     <slot />
 
     <footer>
-      <p class="footer-text">© 2026 Anchita Hari Narayanan</p>
-      <div class="footer-links">
-        <a href="https://www.linkedin.com/in/anchita-hn" target="_blank">LinkedIn</a>
-        <a href="https://github.com/anchitahari" target="_blank">GitHub</a>
-        <a href="mailto:anchita.hari@gmail.com">Email</a>
-      </div>
+        <p class="footer-text">© 2026 Anchita Hari Narayanan</p>
+        <div class="footer-links">
+            <a href="https://www.linkedin.com/in/anchita-hn" target="_blank">LinkedIn</a>
+            <a href="https://github.com/anchitahari" target="_blank">GitHub</a>
+            <a href="mailto:anchita.hari@gmail.com">Email</a>
+        </div>
     </footer>
 
     <script>
@@ -47,6 +69,7 @@ const { title = 'Anchita Hari - Software Engineer' } = Astro.props;
                 toggleChat: () => void;
                 sendSuggestion: (btn: HTMLButtonElement) => void;
                 sendMessage: () => Promise<void>;
+                closeMobileMenu: () => void;
             }
         }
 
@@ -178,12 +201,40 @@ const { title = 'Anchita Hari - Software Engineer' } = Astro.props;
             }
         }
         });
+
+        // hamburger menu
+        window.closeMobileMenu = function() {
+            document.getElementById('mobileMenu')?.classList.remove('open');
+            document.getElementById('mobileOverlay')?.classList.remove('open');
+            document.getElementById('hamburger')?.classList.remove('open');
+        }
+
+        const hamburger = document.getElementById('hamburger');
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                const menu = document.getElementById('mobileMenu');
+                const overlay = document.getElementById('mobileOverlay');
+                const isOpen = menu?.classList.contains('open');
+                if (isOpen) {
+                    window.closeMobileMenu();
+                } else {
+                    menu?.classList.add('open');
+                    overlay?.classList.add('open');
+                    hamburger.classList.add('open');
+                }
+            });
+        }
+
+        const mobileMenuClose = document.getElementById('mobileMenuClose');
+        if (mobileMenuClose) {
+            mobileMenuClose.addEventListener('click', window.closeMobileMenu);
+        }
     </script>
 
     <div class="chat-bubble" id="chatBubble" onclick="toggleChat()" title="Ask me anything">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-    </svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
     </div>
 
     <div class="chat-popup" id="chatPopup">
